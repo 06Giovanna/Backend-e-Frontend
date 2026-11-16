@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOLUTION TECH — Juntos por um futuro com mais oportunidades</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="../static/styles.css" />
+</head>
+<body>
+
+  <!-- Barra Superior Global de Acessibilidade -->
+  <div class="accessibility-bar" role="region" aria-label="Controles de Acessibilidade">
+    <button type="button" id="btn-global-listen" class="btn-acc" aria-label="Ouvir todo o conteúdo desta tela">
+      <i class="fa-solid fa-volume-high"></i> <span>OUVIR TELA</span>
+    </button>
+    <button type="button" id="btn-global-stop" class="btn-acc btn-acc-stop hidden" aria-label="Parar leitura em voz alta">
+      <i class="fa-solid fa-stop"></i> <span>PARAR ÁUDIO</span>
+    </button>
+    <button type="button" id="btn-font-size" class="btn-acc" aria-label="Alternar tamanho do texto">
+      <i class="fa-solid fa-text-height"></i> <span>A+ TEXTO</span>
+    </button>
+  </div>
+
+  <!-- TELA 1 — PÁGINA INICIAL -->
+  <section id="screen-1" class="screen active" data-screen-title="Página Inicial">
+    <header class="main-header">
+      <div class="brand-logo" onclick="navigateTo('screen-1')" role="button" tabindex="0">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+    </header>
+
+    <main class="screen-content center-content hero-bg">
+      <div class="welcome-card">
+        <div class="welcome-badge">APOIO SOCIAL E SOLIDARIEDADE</div>
+        <h1 class="hero-title">SE VOCÊ PRECISA DE AJUDA, CLIQUE AQUI</h1>
+        <p class="hero-subtitle">Conectamos você rapidamente a abrigos, alimentação, saúde e pontos de apoio próximos.</p>
+        
+        <button type="button" class="btn-primary btn-xl pulse-btn" onclick="navigateTo('screen-2')">
+          <i class="fa-solid fa-hand-pointer"></i>
+          <span>Buscar ajuda agora</span>
+        </button>
+      </div>
+    </main>
+
+    <footer class="main-footer">
+      <div class="brand-logo small">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+      <p class="footer-slogan">Juntos por um futuro com mais oportunidades.</p>
+    </footer>
+  </section>
+
+  <!-- TELA 2 — ESCOLHA DE PERFIL -->
+  <section id="screen-2" class="screen" data-screen-title="Escolha de Perfil">
+    <header class="main-header">
+      <button type="button" class="btn-back-header" onclick="navigateTo('screen-1')" aria-label="Voltar para Início">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </button>
+      <div class="brand-logo" onclick="navigateTo('screen-1')">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+      <div class="header-spacer"></div>
+    </header>
+
+    <main class="screen-content center-content">
+      <h2 class="sr-only">Escolha como deseja continuar</h2>
+      <div class="profile-grid">
+        <div class="profile-card" onclick="selectProfile('doador')" role="button" tabindex="0">
+          <div class="circle-icon">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+          </div>
+          <p class="profile-desc">Quero contribuir com alimentos, roupas ou itens essenciais.</p>
+          <button type="button" class="btn-royal btn-lg">DOADOR</button>
+        </div>
+
+        <div class="profile-card" onclick="selectProfile('anonimo')" role="button" tabindex="0">
+          <div class="circle-icon">
+            <i class="fa-solid fa-user-secret"></i>
+            <span class="question-badge">?</span>
+          </div>
+          <p class="profile-desc">Preciso de acolhimento, alimentação, abrigo ou apoio imediato.</p>
+          <button type="button" class="btn-royal btn-lg">ANÔNIMO</button>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- TELA 3 — IDENTIFICAÇÃO -->
+  <section id="screen-3" class="screen" data-screen-title="Identificação">
+    <header class="main-header">
+      <button type="button" class="btn-back-header" onclick="navigateTo('screen-2')">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </button>
+      <div class="brand-logo">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+      <div class="step-indicator">Etapa 1 de 4</div>
+    </header>
+
+    <main class="screen-content center-content">
+      <h1 class="section-title">IDENTIFICAÇÃO</h1>
+      <p class="section-subtitle">Selecione uma opção para continuarmos o atendimento</p>
+
+      <div class="horizontal-cards-list" id="gender-options">
+        <div class="select-card-horizontal" data-value="Mulher" onclick="selectSingleOption('gender', 'Mulher', this)" role="button" tabindex="0">
+          <div class="card-icon-box"><i class="fa-solid fa-person-dress"></i></div>
+          <span class="card-label">MULHER</span>
+          <i class="fa-solid fa-circle-check check-indicator"></i>
+        </div>
+
+        <div class="select-card-horizontal" data-value="Homem" onclick="selectSingleOption('gender', 'Homem', this)" role="button" tabindex="0">
+          <div class="card-icon-box"><i class="fa-solid fa-person"></i></div>
+          <span class="card-label">HOMEM</span>
+          <i class="fa-solid fa-circle-check check-indicator"></i>
+        </div>
+
+        <div class="select-card-horizontal" data-value="Outro" onclick="selectSingleOption('gender', 'Outro', this)" role="button" tabindex="0">
+          <div class="card-icon-box"><i class="fa-solid fa-user"></i></div>
+          <span class="card-label">OUTRO</span>
+          <i class="fa-solid fa-circle-check check-indicator"></i>
+        </div>
+      </div>
+
+      <div class="bottom-actions">
+        <button type="button" class="btn-navy btn-next" onclick="validateStepAndGo('gender', 'screen-4', 'Por favor, selecione uma opção de identificação.')">
+          <span>AVANÇAR</span> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </main>
+  </section>
+
+  <!-- TELA 4 — IDADE -->
+  <section id="screen-4" class="screen" data-screen-title="Idade">
+    <header class="main-header">
+      <button type="button" class="btn-back-header" onclick="navigateTo('screen-3')">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </button>
+      <div class="brand-logo">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+      <div class="step-indicator">Etapa 2 de 4</div>
+    </header>
+
+    <main class="screen-content center-content">
+      <h1 class="section-title">IDADE</h1>
+      <p class="section-subtitle">Selecione sua faixa etária</p>
+
+      <div class="age-grid" id="age-options">
+        <div class="age-card" data-value="0–18" onclick="selectSingleOption('age', '0–18', this)" role="button" tabindex="0">
+          <span class="age-number">0–18</span>
+          <span class="age-unit">anos</span>
+        </div>
+        <div class="age-card" data-value="18–30" onclick="selectSingleOption('age', '18–30', this)" role="button" tabindex="0">
+          <span class="age-number">18–30</span>
+          <span class="age-unit">anos</span>
+        </div>
+        <div class="age-card" data-value="30–50" onclick="selectSingleOption('age', '30–50', this)" role="button" tabindex="0">
+          <span class="age-number">30–50</span>
+          <span class="age-unit">anos</span>
+        </div>
+        <div class="age-card" data-value="50–70" onclick="selectSingleOption('age', '50–70', this)" role="button" tabindex="0">
+          <span class="age-number">50–70</span>
+          <span class="age-unit">anos</span>
+        </div>
+        <div class="age-card" data-value="70–80" onclick="selectSingleOption('age', '70–80', this)" role="button" tabindex="0">
+          <span class="age-number">70–80</span>
+          <span class="age-unit">anos</span>
+        </div>
+        <div class="age-card" data-value="80–100" onclick="selectSingleOption('age', '80–100', this)" role="button" tabindex="0">
+          <span class="age-number">80–100</span>
+          <span class="age-unit">anos</span>
+        </div>
+      </div>
+
+      <div class="bottom-actions">
+        <button type="button" class="btn-navy btn-next" onclick="validateStepAndGo('age', 'screen-5', 'Por favor, selecione uma faixa de idade.')">
+          <span>AVANÇAR</span> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </main>
+  </section>
+
+  <!-- TELA 5 — NECESSIDADE -->
+  <section id="screen-5" class="screen" data-screen-title="Necessidade">
+    <header class="main-header">
+      <button type="button" class="btn-back-header" onclick="navigateTo('screen-4')">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </button>
+      <div class="brand-logo">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+      <div class="step-indicator">Etapa 3 de 4</div>
+    </header>
+
+    <main class="screen-content center-content">
+      <h1 class="section-title">NECESSIDADE</h1>
+      <p class="section-subtitle">Você pode selecionar uma ou mais opções abaixo</p>
+
+      <div class="needs-grid" id="needs-options">
+        <div class="need-card" data-value="Abrigo" onclick="toggleNeed('Abrigo', this)" role="button" tabindex="0">
+          <i class="fa-solid fa-house"></i>
+          <span>ABRIGO</span>
+        </div>
+        <div class="need-card" data-value="Alimento" onclick="toggleNeed('Alimento', this)" role="button" tabindex="0">
+          <i class="fa-solid fa-utensils"></i>
+          <span>ALIMENTO</span>
+        </div>
+        <div class="need-card" data-value="Banho" onclick="toggleNeed('Banho', this)" role="button" tabindex="0">
+          <i class="fa-solid fa-shower"></i>
+          <span>BANHO</span>
+        </div>
+        <div class="need-card" data-value="Saúde" onclick="toggleNeed('Saúde', this)" role="button" tabindex="0">
+          <i class="fa-solid fa-kit-medical"></i>
+          <span>SAÚDE</span>
+        </div>
+        <div class="need-card" data-value="Roupas" onclick="toggleNeed('Roupas', this)" role="button" tabindex="0">
+          <i class="fa-solid fa-shirt"></i>
+          <span>ROUPAS</span>
+        </div>
+        <div class="need-card" data-value="Cobertores" onclick="toggleNeed('Cobertores', this)" role="button" tabindex="0">
+          <i class="fa-solid fa-shield-heart"></i>
+          <span>COBERTORES</span>
+        </div>
+      </div>
+
+      <div class="other-need-bar">
+        <div class="other-label">
+          <i class="fa-solid fa-pen"></i>
+          <span>OUTRO</span>
+        </div>
+        <input type="text" id="other-need-input" placeholder="Descreva outra necessidade aqui..." aria-label="Escrever outra necessidade" />
+        <button type="button" class="btn-icon-circle" id="btn-voice-need" onclick="startDictationForInput('other-need-input', this)" title="Falar necessidade" aria-label="Falar outra necessidade pelo microfone">
+          <i class="fa-solid fa-microphone"></i>
+        </button>
+        <button type="button" class="btn-icon-circle btn-royal-icon" onclick="confirmOtherNeed()" title="Adicionar necessidade" aria-label="Confirmar outra necessidade">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="bottom-actions">
+        <button type="button" class="btn-navy btn-next" onclick="proceedFromNeeds()">
+          <span>AVANÇAR</span> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </main>
+  </section>
+
+  <!-- TELA 6 — LOCALIZAÇÃO PARA QUEM PRECISA DE AJUDA -->
+  <section id="screen-6" class="screen" data-screen-title="Localização para Quem Precisa de Ajuda">
+    <header class="main-header">
+      <div class="brand-logo" onclick="navigateTo('screen-1')">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+      <div class="header-titles">
+        <h1 class="header-main-title">LOCALIZAÇÃO</h1>
+        <p class="header-sub">Encontre ajuda perto de você</p>
+      </div>
+      <button type="button" class="btn-menu-toggle" onclick="toggleMobileNav('nav-screen-6')" aria-label="Abrir Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </header>
+
+    <nav id="nav-screen-6" class="top-nav-bar" aria-label="Navegação Principal">
+      <button type="button" class="nav-tab" onclick="navigateTo('screen-1')"><i class="fa-solid fa-house"></i> Início</button>
+      <button type="button" class="nav-tab active" onclick="navigateTo('screen-6')"><i class="fa-solid fa-map-location-dot"></i> Mapa</button>
+      <button type="button" class="nav-tab" onclick="navigateTo('screen-10')"><i class="fa-solid fa-hand-holding-heart"></i> Doações</button>
+      <button type="button" class="nav-tab" onclick="openFoodShelterScreen('alimentacao')"><i class="fa-solid fa-utensils"></i> Alimentação</button>
+      <button type="button" class="nav-tab" onclick="openFoodShelterScreen('abrigo')"><i class="fa-solid fa-bed"></i> Abrigo</button>
+    </nav>
+
+    <main class="screen-content dashboard-content">
+      <div class="split-panel">
+        <div class="panel-left">
+          <div class="panel-header-row">
+            <h2><i class="fa-solid fa-building-ngo"></i> ONGs PRÓXIMAS</h2>
+            <span class="demo-tag">Dados demonstrativos</span>
+          </div>
+          <div id="help-ongs-list" class="institutions-list"></div>
+          <button type="button" class="btn-outline-navy mt-1" onclick="navigateTo('screen-5')">
+            <i class="fa-solid fa-arrow-left"></i> Alterar Necessidades
+          </button>
+        </div>
+
+        <div class="panel-right">
+          <div class="map-top-badge">
+            <span><i class="fa-solid fa-location-dot"></i> <strong>MARINGÁ - PR</strong> • Ref: Parque do Ingá</span>
+            <button type="button" class="btn-map-center" onclick="centerMap('map-help')">
+              <i class="fa-solid fa-crosshairs"></i> Minha Localização
+            </button>
+          </div>
+          <div id="map-help" class="leaflet-map-box" aria-label="Mapa interativo de Maringá-PR"></div>
+          <div class="map-legend">
+            <span class="legend-item"><span class="dot dot-user"></span> Sua localização</span>
+            <span class="legend-item"><span class="dot dot-ong"></span> ONGs</span>
+            <span class="legend-item"><span class="dot dot-shelter"></span> Abrigos</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- TELA 7 — IMPRESSÃO DO TICKET -->
+  <section id="screen-7" class="screen" data-screen-title="Impressão do Ticket">
+    <header class="main-header">
+      <button type="button" class="btn-back-header" onclick="navigateTo('screen-6')">
+        <i class="fa-solid fa-arrow-left"></i> Voltar ao Mapa
+      </button>
+      <div class="header-titles">
+        <h1 class="header-main-title">LOCALIZAÇÃO</h1>
+        <p class="header-sub">Encontre ajuda perto de você</p>
+      </div>
+      <div class="brand-logo">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+    </header>
+
+    <main class="screen-content center-content">
+      <div class="ticket-layout">
+        <div class="ticket-paper" id="printable-ticket">
+          <div class="ticket-print-banner">
+            <i class="fa-solid fa-print"></i> SEU TICKET SERÁ IMPRESSO ABAIXO
+          </div>
+          <div class="ticket-brand">
+            <i class="fa-solid fa-hand-holding-heart"></i> SOLUTION <strong>TECH</strong>
+          </div>
+          <hr class="ticket-divider" />
+          <p class="ticket-label">Sua localização</p>
+          <h2 class="ticket-place-name" id="ticket-inst-name">Projeto Acolher</h2>
+          <p class="ticket-address" id="ticket-inst-address">Rua Pioneiro Miguel Saldanha, 312 — Maringá - PR</p>
+          <div class="ticket-details-box" id="ticket-user-summary"></div>
+          <div class="ticket-confirm-msg">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Você está próximo do ponto de apoio selecionado. Apresente este comprovante no local.</span>
+          </div>
+          <div class="ticket-code" id="ticket-protocol">PROTOCOLO: #ST-2026-001</div>
+        </div>
+
+        <div class="totem-showcase">
+          <div class="totem-machine">
+            <div class="totem-top-cap">SOLUTION TECH</div>
+            <div class="totem-screen">
+              <div class="totem-mini-map">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>MARINGÁ - PR</span>
+                <small>Rota calculada</small>
+              </div>
+            </div>
+            <div class="totem-body">
+              <div class="totem-slot-label">SAÍDA DO TICKET</div>
+              <div class="totem-slot"></div>
+              <div class="totem-arrow-indicator">
+                <i class="fa-solid fa-arrow-up"></i>
+                <span>Aqui será impresso seu ticket!</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-buttons-group no-print">
+            <button type="button" class="btn-navy btn-lg" onclick="printTicket()">
+              <i class="fa-solid fa-print"></i> IMPRIMIR TICKET
+            </button>
+            <button type="button" class="btn-outline-navy" onclick="navigateTo('screen-1')">
+              <i class="fa-solid fa-house"></i> Concluir e Voltar ao Início
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- TELA 8 — CADASTRO DO DOADOR -->
+  <section id="screen-8" class="screen" data-screen-title="Cadastro do Doador">
+    <header class="main-header">
+      <div class="brand-logo" onclick="navigateTo('screen-1')">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+      <button type="button" class="btn-back-header" onclick="navigateTo('screen-2')">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </button>
+    </header>
+
+    <main class="screen-content center-content">
+      <h1 class="section-title">CADASTRO</h1>
+      <p class="section-subtitle">Preencha seus dados para localizar pontos de entrega de doações</p>
+
+      <form id="donor-form" class="form-card" onsubmit="submitDonorForm(event)" novalidate>
+        <div class="input-group">
+          <label for="donor-name"><i class="fa-solid fa-user"></i> Nome completo</label>
+          <input type="text" id="donor-name" placeholder="Digite seu nome completo" required />
+          <span class="error-msg" id="err-name"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="donor-phone"><i class="fa-solid fa-phone"></i> Número de telefone</label>
+          <input type="tel" id="donor-phone" placeholder="(44) 99999-9999" maxlength="15" required />
+          <span class="error-msg" id="err-phone"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="donor-cpf"><i class="fa-solid fa-id-card"></i> CPF</label>
+          <input type="text" id="donor-cpf" placeholder="000.000.000-00" maxlength="14" required />
+          <span class="error-msg" id="err-cpf"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="donor-email"><i class="fa-solid fa-envelope"></i> E-mail</label>
+          <input type="email" id="donor-email" placeholder="seuemail@exemplo.com" required />
+          <span class="error-msg" id="err-email"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="donor-item"><i class="fa-solid fa-gift"></i> O que deseja doar?</label>
+          <input type="text" id="donor-item" placeholder="Ex: Alimentos não perecíveis, roupas, cobertores..." required />
+          <span class="error-msg" id="err-item"></span>
+        </div>
+
+        <p class="privacy-note"><i class="fa-solid fa-lock"></i> Seus dados são utilizados apenas localmente nesta sessão e não são enviados a servidores externos.</p>
+
+        <div class="bottom-actions">
+          <button type="submit" class="btn-navy btn-next">
+            <span>AVANÇAR</span> <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </form>
+    </main>
+  </section>
+
+  <!-- TELA 9 — LOCALIZAÇÃO PARA DOADORES -->
+  <section id="screen-9" class="screen" data-screen-title="Localização para Doadores">
+    <header class="main-header">
+      <div class="brand-logo" onclick="navigateTo('screen-1')">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+      <div class="header-titles">
+        <h1 class="header-main-title">LOCALIZAÇÃO</h1>
+        <p class="header-sub">Encontre aonde doar perto de você</p>
+      </div>
+      <button type="button" class="btn-menu-toggle" onclick="toggleMobileNav('nav-screen-9')" aria-label="Abrir Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </header>
+
+    <nav id="nav-screen-9" class="top-nav-bar" aria-label="Navegação do Doador">
+      <button type="button" class="nav-tab" onclick="navigateTo('screen-1')"><i class="fa-solid fa-house"></i> Início</button>
+      <button type="button" class="nav-tab active" onclick="navigateTo('screen-9')"><i class="fa-solid fa-map-location-dot"></i> Mapa</button>
+      <button type="button" class="nav-tab" onclick="navigateTo('screen-10')"><i class="fa-solid fa-hand-holding-heart"></i> Doações</button>
+      <button type="button" class="nav-tab" onclick="openFoodShelterScreen('alimentacao')"><i class="fa-solid fa-utensils"></i> Alimentação</button>
+      <button type="button" class="nav-tab" onclick="openFoodShelterScreen('abrigo')"><i class="fa-solid fa-bed"></i> Abrigo</button>
+    </nav>
+
+    <main class="screen-content dashboard-content">
+      <div class="donor-welcome-banner" id="donor-greeting-banner"></div>
+
+      <div class="split-panel">
+        <div class="panel-left">
+          <div class="panel-header-row">
+            <h2><i class="fa-solid fa-box-open"></i> PONTOS DE COLETA</h2>
+            <span class="demo-tag">Dados demonstrativos</span>
+          </div>
+          <div id="donor-points-list" class="institutions-list"></div>
+          <button type="button" class="btn-royal mt-1" onclick="navigateTo('screen-10')">
+            Ver Todas as Opções de Doação <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div class="panel-right">
+          <div class="map-top-badge">
+            <span><i class="fa-solid fa-location-dot"></i> <strong>MARINGÁ - PR</strong> • Pontos de Doação</span>
+            <button type="button" class="btn-map-center" onclick="centerMap('map-donor')">
+              <i class="fa-solid fa-crosshairs"></i> Centralizar
+            </button>
+          </div>
+          <div id="map-donor" class="leaflet-map-box"></div>
+          <div class="map-legend">
+            <span class="legend-item"><span class="dot dot-user"></span> Sua localização</span>
+            <span class="legend-item"><span class="dot dot-ong"></span> Pontos que recebem doações</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- TELA 10 — ÁREA DE DOAÇÕES -->
+  <section id="screen-10" class="screen" data-screen-title="Área de Doações">
+    <header class="main-header">
+      <div class="brand-logo" onclick="navigateTo('screen-1')">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+      <div class="header-titles">
+        <h1 class="header-main-title">DOAÇÕES</h1>
+        <p class="header-sub">Instituições que recebem doações em Maringá-PR</p>
+      </div>
+      <button type="button" class="btn-menu-toggle" onclick="toggleMobileNav('nav-screen-10')" aria-label="Abrir Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </header>
+
+    <nav id="nav-screen-10" class="top-nav-bar">
+      <button type="button" class="nav-tab" onclick="navigateTo('screen-1')"><i class="fa-solid fa-house"></i> Início</button>
+      <button type="button" class="nav-tab" onclick="goToRoleMap()"><i class="fa-solid fa-map-location-dot"></i> Mapa</button>
+      <button type="button" class="nav-tab active" onclick="navigateTo('screen-10')"><i class="fa-solid fa-hand-holding-heart"></i> Doações</button>
+      <button type="button" class="nav-tab" onclick="openFoodShelterScreen('alimentacao')"><i class="fa-solid fa-utensils"></i> Alimentação</button>
+      <button type="button" class="nav-tab" onclick="openFoodShelterScreen('abrigo')"><i class="fa-solid fa-bed"></i> Abrigo</button>
+    </nav>
+
+    <main class="screen-content dashboard-content">
+      <div class="filter-bar">
+        <span class="filter-title"><i class="fa-solid fa-filter"></i> Filtrar por tipo de doação:</span>
+        <div class="filter-chips" id="donation-filters">
+          <button type="button" class="chip active" onclick="filterDonations('Todos', this)">Todos</button>
+          <button type="button" class="chip" onclick="filterDonations('Alimentos', this)">Alimentos</button>
+          <button type="button" class="chip" onclick="filterDonations('Roupas', this)">Roupas</button>
+          <button type="button" class="chip" onclick="filterDonations('Cobertores', this)">Cobertores</button>
+          <button type="button" class="chip" onclick="filterDonations('Higiene', this)">Higiene</button>
+        </div>
+      </div>
+
+      <div class="split-panel">
+        <div class="panel-left">
+          <div id="donations-filtered-list" class="institutions-list"></div>
+        </div>
+        <div class="panel-right">
+          <div id="map-donations-area" class="leaflet-map-box"></div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- TELA 11 — ÁREA DE ALIMENTAÇÃO E ABRIGO -->
+  <section id="screen-11" class="screen" data-screen-title="Alimentação e Abrigo">
+    <header class="main-header">
+      <div class="brand-logo" onclick="navigateTo('screen-1')">
+        <span class="logo-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+        <span class="logo-text">SOLUTION <strong>TECH</strong></span>
+      </div>
+      <div class="header-titles">
+        <h1 class="header-main-title">ALIMENTAÇÃO E ABRIGO</h1>
+        <p class="header-sub">Locais de refeição e acolhimento em Maringá-PR</p>
+      </div>
+      <button type="button" class="btn-menu-toggle" onclick="toggleMobileNav('nav-screen-11')" aria-label="Abrir Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </header>
+
+    <nav id="nav-screen-11" class="top-nav-bar">
+      <button type="button" class="nav-tab" onclick="navigateTo('screen-1')"><i class="fa-solid fa-house"></i> Início</button>
+      <button type="button" class="nav-tab" onclick="goToRoleMap()"><i class="fa-solid fa-map-location-dot"></i> Mapa</button>
+      <button type="button" class="nav-tab" onclick="navigateTo('screen-10')"><i class="fa-solid fa-hand-holding-heart"></i> Doações</button>
+      <button type="button" class="nav-tab" id="tab-nav-food" onclick="openFoodShelterScreen('alimentacao')"><i class="fa-solid fa-utensils"></i> Alimentação</button>
+      <button type="button" class="nav-tab" id="tab-nav-shelter" onclick="openFoodShelterScreen('abrigo')"><i class="fa-solid fa-bed"></i> Abrigo</button>
+    </nav>
+
+    <main class="screen-content dashboard-content">
+      <div class="category-switch-bar">
+        <button type="button" class="cat-btn active" id="btn-cat-all" onclick="filterFoodShelter('todos')">
+          <i class="fa-solid fa-layer-group"></i> TODOS OS LOCAIS
+        </button>
+        <button type="button" class="cat-btn" id="btn-cat-food" onclick="filterFoodShelter('alimentacao')">
+          <i class="fa-solid fa-utensils"></i> ALIMENTAÇÃO
+        </button>
+        <button type="button" class="cat-btn" id="btn-cat-shelter" onclick="filterFoodShelter('abrigo')">
+          <i class="fa-solid fa-bed"></i> ABRIGO
+        </button>
+      </div>
+
+      <div class="split-panel">
+        <div class="panel-left">
+          <div class="panel-header-row">
+            <h2 id="food-shelter-heading">LOCAIS DISPONÍVEIS</h2>
+            <span class="demo-tag">Horários demonstrativos</span>
+          </div>
+          <div id="food-shelter-list" class="institutions-list"></div>
+        </div>
+        <div class="panel-right">
+          <div id="map-food-shelter" class="leaflet-map-box"></div>
+          <div class="map-legend">
+            <span class="legend-item"><span class="dot dot-food"></span> Alimentação</span>
+            <span class="legend-item"><span class="dot dot-shelter"></span> Abrigo</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- MODAL DE DETALHES -->
+  <div id="institution-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-inst-title">
+    <div class="modal-card">
+      <button type="button" class="modal-close" onclick="closeInstitutionModal()" aria-label="Fechar janela">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="modal-badge" id="modal-inst-category">INSTITUIÇÃO</div>
+      <h2 id="modal-inst-title">Nome da Instituição</h2>
+      <p class="modal-info-line"><i class="fa-solid fa-location-dot"></i> <span id="modal-inst-address"></span></p>
+      <p class="modal-info-line"><i class="fa-solid fa-route"></i> <span id="modal-inst-distance"></span></p>
+      <p class="modal-info-line"><i class="fa-solid fa-circle-info"></i> <span id="modal-inst-details"></span></p>
+      <div class="modal-actions">
+        <button type="button" class="btn-royal" id="modal-btn-listen" onclick="speakModalContent()">
+          <i class="fa-solid fa-volume-high"></i> OUVIR INFORMAÇÕES
+        </button>
+        <button type="button" class="btn-navy" id="modal-btn-action">
+          SELECIONAR LOCAL
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATBOT ACESSÍVEL POR VOZ -->
+  <div id="voice-chatbot-wrapper" class="chatbot-wrapper">
+    <div id="chatbot-window" class="chatbot-window hidden" role="region" aria-label="Assistente Virtual por Voz Solution Tech">
+      <div class="chatbot-header">
+        <div class="chatbot-title-group">
+          <i class="fa-solid fa-robot"></i>
+          <div>
+            <strong>ASSISTENTE VOZ</strong>
+            <small>Solution Tech Acessível</small>
+          </div>
+        </div>
+        <button type="button" class="chatbot-close-btn" onclick="toggleChatbot()" aria-label="Fechar assistente">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="chatbot-voice-controls">
+        <button type="button" class="btn-voice-action btn-listen-screen" onclick="readCurrentScreenAloud()" aria-label="Ouvir todo o conteúdo desta tela">
+          <i class="fa-solid fa-volume-high"></i>
+          <span>OUVIR</span>
+        </button>
+        <button type="button" class="btn-voice-action" onclick="repeatLastBotMessage()" aria-label="Repetir última resposta">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span>REPETIR</span>
+        </button>
+        <button type="button" class="btn-voice-action btn-stop-speech" onclick="stopSpeech()" aria-label="Interromper leitura">
+          <i class="fa-solid fa-stop"></i>
+          <span>PARAR</span>
+        </button>
+      </div>
+
+      <div id="chatbot-messages" class="chatbot-messages" aria-live="polite"></div>
+
+      <div class="chatbot-quick-chips">
+        <button type="button" onclick="handleUserCommand('Não sei o que apertar')">Não sei o que apertar</button>
+        <button type="button" onclick="handleUserCommand('Preciso de comida')">Preciso de comida</button>
+        <button type="button" onclick="handleUserCommand('Preciso de um abrigo')">Preciso de abrigo</button>
+        <button type="button" onclick="handleUserCommand('Quero doar roupas')">Quero doar</button>
+      </div>
+
+      <div class="chatbot-footer">
+        <button type="button" id="btn-chatbot-mic" class="btn-big-mic" onclick="toggleChatbotMicrophone()" aria-label="Falar com o assistente usando o microfone">
+          <i class="fa-solid fa-microphone"></i>
+          <span id="mic-btn-label">TOQUE PARA FALAR</span>
+        </button>
+
+        <form class="chatbot-text-form" onsubmit="submitChatbotText(event)">
+          <input type="text" id="chatbot-text-input" placeholder="Ou escreva aqui..." aria-label="Escrever mensagem para o assistente" />
+          <button type="submit" aria-label="Enviar mensagem"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+
+    <button type="button" id="chatbot-fab" class="chatbot-fab" onclick="toggleChatbot()" aria-label="Abrir Assistente Virtual por Voz">
+      <i class="fa-solid fa-robot"></i>
+      <span class="fab-label">AJUDA POR VOZ</span>
+    </button>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../js/script.js"></script>
+</body>
+</html>
